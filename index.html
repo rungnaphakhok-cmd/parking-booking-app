@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เว็บไซต์จองที่จอดรถ - Parking Booking</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .active-tab { color: #2563eb; font-weight: 600; border-bottom: 2px solid #2563eb; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col pb-24 md:pb-0">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                <div class="bg-blue-600 text-white p-2 rounded-xl flex items-center justify-center font-bold text-xl shadow-md shadow-blue-200">
+                    <i class="fa-solid font-black">P</i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-blue-900 leading-tight">ParkEase</h1>
+                    <p class="text-xs text-slate-500">จองที่จอดรถ สะดวก รวดเร็ว</p>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-6 font-medium text-sm text-slate-600">
+                <button onclick="navigateTo('home')" id="nav-home" class="py-2 hover:text-blue-600 transition">หน้าแรก</button>
+                <button onclick="navigateTo('search')" id="nav-search" class="py-2 hover:text-blue-600 transition">ค้นหาที่จอดรถ</button>
+                <button onclick="navigateTo('detail')" id="nav-detail" class="py-2 hover:text-blue-600 transition">รายละเอียดที่จอดรถ</button>
+                <button onclick="navigateTo('booking')" id="nav-booking" class="py-2 hover:text-blue-600 transition">จองและชำระเงิน</button>
+                <button onclick="navigateTo('profile')" id="nav-profile" class="py-2 hover:text-blue-600 transition">โปรไฟล์ผู้ใช้</button>
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <button onclick="openGithubModal()" class="flex items-center gap-2 bg-slate-900 text-white text-xs px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+                    <i class="fa-brands fa-github text-sm"></i>
+                    <span class="hidden sm:inline">วิธีลง GitHub</span>
+                </button>
+                <button onclick="navigateTo('profile')" class="md:hidden text-slate-600 p-2">
+                    <i class="fa-regular fa-circle-user text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full">
+
+        <!-- 1. หน้าแรก (Home) -->
+        <section id="page-home" class="space-y-6">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-lg">
+                    <span class="bg-white/20 text-xs px-3 py-1 rounded-full text-white uppercase tracking-wider mb-3 inline-block backdrop-blur-sm">จองล่วงหน้าง่ายๆ</span>
+                    <h2 class="text-2xl md:text-4xl font-bold mb-3">ค้นหาและจองที่จอดรถ ในราคาสุดคุ้ม</h2>
+                    <p class="text-blue-100 text-sm mb-6">ไม่ต้องวนหาที่จอดอีกต่อไป จองล่วงหน้า การันตีมีที่จอด 100% พร้อมส่วนลดมากมาย</p>
+                    <button onclick="navigateTo('search')" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold px-6 py-3 rounded-xl shadow-lg transition transform active:scale-95 flex items-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass"></i> ค้นหาที่จอดเลย
+                    </button>
+                </div>
+            </div>
+
+            <!-- Promotion Banners -->
+            <div class="space-y-3">
+                <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-tags text-blue-600"></i> โปรโมชั่นพิเศษ
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-gradient-to-r from-amber-400 to-orange-500 text-white p-4 rounded-xl shadow-sm flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs bg-white/20 px-2 py-0.5 rounded">โค้ดส่วนลด</span>
+                            <h4 class="text-xl font-extrabold mt-1">ลด 20%</h4>
+                            <p class="text-xs opacity-90">สำหรับการจองครั้งแรก</p>
+                        </div>
+                        <span class="text-[10px] bg-slate-900/30 px-2 py-1 rounded mt-3 text-center font-mono">PARKFIRST</span>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-4 rounded-xl shadow-sm flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs bg-white/20 px-2 py-0.5 rounded">สุดคุ้ม</span>
+                            <h4 class="text-xl font-extrabold mt-1">ลด 15%</h4>
+                            <p class="text-xs opacity-90">เมื่อจองแบบรายวัน</p>
+                        </div>
+                        <span class="text-[10px] bg-slate-900/30 px-2 py-1 rounded mt-3 text-center font-mono">DAYPARK</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommended Services -->
+            <div class="space-y-3">
+                <h3 class="font-bold text-lg text-slate-800">แนะนำบริการ</h3>
+                <div class="grid grid-cols-4 gap-3">
+                    <button onclick="navigateTo('search')" class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition text-center border border-slate-100 flex flex-col items-center gap-2">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-lg"><i class="fa-solid fa-key"></i></div>
+                        <span class="text-xs font-medium">Valet</span>
+                    </button>
+                    <button onclick="navigateTo('search')" class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition text-center border border-slate-100 flex flex-col items-center gap-2">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-lg"><i class="fa-solid fa-shield-halved"></i></div>
+                        <span class="text-xs font-medium">VIP Parking</span>
+                    </button>
+                    <button onclick="navigateTo('search')" class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition text-center border border-slate-100 flex flex-col items-center gap-2">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-lg"><i class="fa-solid fa-clock"></i></div>
+                        <span class="text-xs font-medium">Long-term</span>
+                    </button>
+                    <button onclick="navigateTo('search')" class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition text-center border border-slate-100 flex flex-col items-center gap-2">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-lg"><i class="fa-solid fa-bolt"></i></div>
+                        <span class="text-xs font-medium">EV Charge</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Search Widget -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot text-blue-600"></i> ค้นหาที่จอดรถใกล้คุณ
+                </h3>
+                <div class="relative">
+                    <input type="text" placeholder="พิมพ์ชื่อห้าง, สถานีรถไฟฟ้า, หรือสถานที่..." class="w-full pl-10 pr-4 py-3 bg-slate-50 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-blue-500">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
+                </div>
+                <div class="h-40 bg-slate-200 rounded-xl flex items-center justify-center text-slate-400 relative overflow-hidden">
+                    <i class="fa-solid fa-map-location-dot text-4xl"></i>
+                    <span class="absolute bottom-2 right-2 bg-white/80 text-[10px] px-2 py-0.5 rounded text-slate-600">แผนที่จำลอง</span>
+                </div>
+                <button onclick="navigateTo('search')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-medium text-sm transition">
+                    ดูสถานที่จอดรถทั้งหมด
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. ค้นหาที่จอดรถ (Search) -->
+        <section id="page-search" class="hidden space-y-4">
+            <div class="bg-white p-4 rounded-2xl shadow-sm space-y-3">
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="ค้นหาชื่อสถานที่ เช่น Central World..." class="w-full pl-10 pr-10 py-2.5 bg-slate-50 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-blue-500" onkeyup="filterParkingList()">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400"></i>
+                    <button class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-sliders"></i></button>
+                </div>
+
+                <div class="flex items-center gap-2 text-xs text-slate-500 overflow-x-auto pb-1">
+                    <span class="font-medium whitespace-nowrap">ตัวกรอง:</span>
+                    <button class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full border border-blue-200 whitespace-nowrap">ว่างตอนนี้</button>
+                    <button class="px-3 py-1 bg-slate-100 rounded-full whitespace-nowrap">มีจุดชาร์จ EV</button>
+                    <button class="px-3 py-1 bg-slate-100 rounded-full whitespace-nowrap">ที่ร่ม</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-12 gap-6">
+                <div class="md:col-span-5 space-y-3" id="parkingListContainer">
+                    <!-- Dynamic Parking Items will be rendered here -->
+                </div>
+
+                <!-- Map View (Desktop Only) -->
+                <div class="hidden md:block md:col-span-7 bg-slate-200 rounded-2xl min-h-[400px] relative overflow-hidden flex items-center justify-center">
+                    <i class="fa-solid fa-map-location-dot text-6xl text-slate-400"></i>
+                    <div class="absolute top-4 left-4 bg-white px-3 py-2 rounded-lg shadow-sm text-xs font-semibold text-slate-700">
+                        📍 แสดงผลบนแผนที่
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. รายละเอียดที่จอดรถ (Detail) -->
+        <section id="page-detail" class="hidden space-y-6">
+            <button onclick="navigateTo('search')" class="text-sm text-slate-500 hover:text-blue-600 flex items-center gap-1 font-medium">
+                <i class="fa-solid fa-chevron-left"></i> ย้อนกลับไปหน้าค้นหา
+            </button>
+
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100">
+                <div class="h-56 bg-slate-800 relative flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover opacity-80" alt="Parking">
+                    <span class="absolute top-4 right-4 bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                        เปิดให้บริการ
+                    </span>
+                </div>
+
+                <div class="p-5 space-y-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800" id="detail-title">อาคารจอดรถ เซ็นทรัลเวิลด์</h2>
+                            <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-red-500"></i> ปทุมวัน, กรุงเทพมหานคร (ห่างออกไป 1.2 กม.)</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xl font-bold text-blue-600" id="detail-price">฿50</span>
+                            <span class="text-xs text-slate-500">/ชม.</span>
+                        </div>
+                    </div>
+
+                    <!-- Real-Time Availability -->
+                    <div class="bg-blue-50 border border-blue-100 rounded-xl p-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-bold text-sm text-blue-900 flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                จำนวนที่จอดรถว่าง Real-time
+                            </span>
+                            <span class="text-xs bg-blue-200 text-blue-800 font-bold px-2 py-0.5 rounded" id="detail-total-spaces">ว่าง 35 ช่อง</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                            <div class="bg-white p-2 rounded border border-blue-100 flex justify-between">
+                                <span class="text-slate-500">ชั้น B1</span>
+                                <span class="font-bold text-emerald-600">5 ช่อง</span>
+                            </div>
+                            <div class="bg-white p-2 rounded border border-blue-100 flex justify-between">
+                                <span class="text-slate-500">ชั้น B2</span>
+                                <span class="font-bold text-emerald-600">12 ช่อง</span>
+                            </div>
+                            <div class="bg-white p-2 rounded border border-blue-100 flex justify-between">
+                                <span class="text-slate-500">ชั้น 2</span>
+                                <span class="font-bold text-emerald-600">8 ช่อง</span>
+                            </div>
+                            <div class="bg-white p-2 rounded border border-blue-100 flex justify-between">
+                                <span class="text-slate-500">ชั้น 3</span>
+                                <span class="font-bold text-emerald-600">10 ช่อง</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Info Tabs / Reviews -->
+                    <div class="space-y-3 pt-2">
+                        <h4 class="font-bold text-sm text-slate-800">เงื่อนไขและสิ่งอำนวยความสะดวก</h4>
+                        <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+                            <li>เปิดให้บริการเวลา 06:00 - 22:00 น.</li>
+                            <li>มีกล้องวงจรปิด CCTV และ รปภ. ดูแลตลอด 24 ชั่วโมง</li>
+                            <li>รองรับความสูงรถไม่เกิน 2.1 เมตร</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="navigateTo('booking')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-base">
+                        <span>จองที่จอดรถนี้</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. การจองและการชำระเงิน (Booking & Payment) -->
+        <section id="page-booking" class="hidden space-y-6">
+            <button onclick="navigateTo('detail')" class="text-sm text-slate-500 hover:text-blue-600 flex items-center gap-1 font-medium">
+                <i class="fa-solid fa-chevron-left"></i> ย้อนกลับไปรายละเอียด
+            </button>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Booking Details Form -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                    <h3 class="font-bold text-base text-slate-800 border-b pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-check text-blue-600"></i> ข้อมูลการจอง
+                    </h3>
+
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">วันที่ต้องการจอง</label>
+                            <input type="date" id="bookDate" class="w-full p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-sm">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">เวลาที่เข้า</label>
+                                <input type="time" id="bookTimeStart" value="10:00" class="w-full p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-sm" onchange="calculatePrice()">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-500 mb-1">เวลาที่ออก</label>
+                                <input type="time" id="bookTimeEnd" value="13:00" class="w-full p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-sm" onchange="calculatePrice()">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">ทะเบียนรถยนต์</label>
+                            <input type="text" value="1กข 8888 กรุงเทพ" class="w-full p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-sm font-semibold">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Details -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 space-y-4 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-base text-slate-800 border-b pb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-credit-card text-blue-600"></i> เลือกช่องทางการชำระเงิน
+                        </h3>
+
+                        <div class="space-y-2 mt-3">
+                            <label class="flex items-center justify-between p-3 border rounded-xl cursor-pointer hover:bg-slate-50 border-blue-500 bg-blue-50/50">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment" checked class="text-blue-600">
+                                    <span class="text-sm font-medium">PromptPay / QR Code</span>
+                                </div>
+                                <i class="fa-solid fa-qrcode text-xl text-slate-700"></i>
+                            </label>
+                            <label class="flex items-center justify-between p-3 border rounded-xl cursor-pointer hover:bg-slate-50 border-slate-200">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment" class="text-blue-600">
+                                    <span class="text-sm font-medium">บัตรเครดิต / เดบิต</span>
+                                </div>
+                                <i class="fa-solid fa-credit-card text-xl text-slate-400"></i>
+                            </label>
+                        </div>
+
+                        <!-- Price Breakdown -->
+                        <div class="bg-slate-50 p-3 rounded-xl mt-4 space-y-2 text-xs">
+                            <div class="flex justify-between text-slate-600">
+                                <span>ค่าจองที่จอดรถ (<span id="calcHours">3</span> ชั่วโมง)</span>
+                                <span id="calcSubtotal">฿150.00</span>
+                            </div>
+                            <div class="flex justify-between text-emerald-600">
+                                <span>ส่วนลดโปรโมชั่น</span>
+                                <span>-฿0.00</span>
+                            </div>
+                            <div class="flex justify-between font-bold text-sm text-slate-800 border-t pt-2">
+                                <span>ยอดชำระสุทธิ</span>
+                                <span class="text-blue-600" id="calcTotal">฿150.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="confirmBooking()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition mt-4">
+                        ยืนยันการชำระเงิน
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. โปรไฟล์ผู้ใช้ (Profile) -->
+        <section id="page-profile" class="hidden space-y-6">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-2xl font-bold">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-slate-800">สมชาย ใจดี</h3>
+                    <p class="text-xs text-slate-500">somchai.j@example.com | 081-234-5678</p>
+                    <span class="inline-block mt-1 bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded font-semibold">VIP Member</span>
+                </div>
+            </div>
+
+            <!-- Booking History -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                <h3 class="font-bold text-base text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-blue-600"></i> ประวัติการจอง
+                </h3>
+
+                <div id="bookingHistoryContainer" class="space-y-3">
+                    <!-- Dynamic Booking History -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar for Mobile -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-2 py-2 flex justify-around items-center z-40 shadow-lg">
+        <button onclick="navigateTo('home')" id="mob-home" class="flex flex-col items-center gap-1 text-blue-600">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-[10px]">หน้าแรก</span>
+        </button>
+        <button onclick="navigateTo('search')" id="mob-search" class="flex flex-col items-center gap-1 text-slate-400">
+            <i class="fa-solid fa-magnifying-glass text-lg"></i>
+            <span class="text-[10px]">ค้นหา</span>
+        </button>
+        <button onclick="navigateTo('detail')" id="mob-detail" class="flex flex-col items-center gap-1 text-slate-400">
+            <i class="fa-solid fa-circle-info text-lg"></i>
+            <span class="text-[10px]">รายละเอียด</span>
+        </button>
+        <button onclick="navigateTo('booking')" id="mob-booking" class="flex flex-col items-center gap-1 text-slate-400">
+            <i class="fa-solid fa-receipt text-lg"></i>
+            <span class="text-[10px]">ชำระเงิน</span>
+        </button>
+        <button onclick="navigateTo('profile')" id="mob-profile" class="flex flex-col items-center gap-1 text-slate-400">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="text-[10px]">โปรไฟล์</span>
+        </button>
+    </nav>
+
+    <!-- SUCCESS MODAL -->
+    <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-3xl mx-auto">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-lg text-slate-800">จองที่จอดรถสำเร็จ!</h3>
+                <p class="text-xs text-slate-500 mt-1">ระบบได้รับการชำระเงินและออกคิวอาร์โค้ดสำหรับเข้าจอดเรียบร้อยแล้ว</p>
+            </div>
+            <div class="bg-slate-100 p-4 rounded-xl flex justify-center">
+                <i class="fa-solid fa-qrcode text-9xl text-slate-800"></i>
+            </div>
+            <button onclick="closeModalAndGoProfile()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">
+                ดูในประวัติการจอง
+            </button>
+        </div>
+    </div>
+
+    <!-- GITHUB GUIDE MODAL -->
+    <div id="githubModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-brands fa-github text-xl"></i> ขั้นตอนการนำเว็บขึ้น GitHub Pages
+                </h3>
+                <button onclick="closeGithubModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <ol class="text-xs text-slate-600 space-y-2.5 list-decimal pl-4">
+                <li>สร้าง บัญชี <b>GitHub.com</b> (หากยังไม่มี)</li>
+                <li>สร้าง Repository ใหม่ ตั้งชื่อว่า <code class="bg-slate-100 px-1 rounded text-blue-600">parking-app</code> แล้วกด Create</li>
+                <li>อัปโหลดไฟล์ <code class="bg-slate-100 px-1 rounded text-blue-600">index.html</code> นี้ขึ้นไปใน Repository</li>
+                <li>ไปที่เมนู <b>Settings</b> > <b>Pages</b></li>
+                <li>ในหัวข้อ <b>Branch</b> เลือกเป็น <code class="bg-slate-100 px-1 rounded">main</code> หรือ <code class="bg-slate-100 px-1 rounded">master</code> แล้วกด <b>Save</b></li>
+                <li>รอประมาณ 1-2 นาที เว็บไซต์ของคุณจะออนไลน์ทันทีที่ URL: <br><span class="text-blue-600 font-mono">https://yourusername.github.io/parking-app/</span></li>
+            </ol>
+            <button onclick="closeGithubModal()" class="w-full bg-slate-900 text-white font-medium py-2.5 rounded-xl text-xs hover:bg-slate-800 transition">
+                เข้าใจแล้ว
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Mock Data for Parking Spots
+        const parkingData = [
+            { id: 1, name: "อาคารจอดรถ เซ็นทรัลเวิลด์", location: "ปทุมวัน, กรุงเทพฯ", price: 50, available: 35, total: 100, image: "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=400&q=80" },
+            { id: 2, name: "ที่จอดรถ สยามพารากอน", location: "ปทุมวัน, กรุงเทพฯ", price: 60, available: 12, total: 120, image: "https://images.unsplash.com/photo-1590674899484-13da0d1b58f5?auto=format&fit=crop&w=400&q=80" },
+            { id: 3, name: "ลานจอดรถ เมกาบางนา", location: "บางพลี, สมุทรปราการ", price: 30, available: 58, total: 200, image: "https://images.unsplash.com/photo-1573348722427-f1d6819fdf98?auto=format&fit=crop&w=400&q=80" },
+            { id: 4, name: "อาคารจอดรถ MRT จตุจักร", location: "จตุจักร, กรุงเทพฯ", price: 40, available: 5, total: 80, image: "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=400&q=80" }
+        ];
+
+        let selectedParking = parkingData[0];
+        let bookingHistory = [
+            { id: "BK99281", name: "อาคารจอดรถ เซ็นทรัลเวิลด์", date: "2026-09-15", time: "10:00 - 13:00", amount: "฿150.00", status: "เสร็จสิ้น" }
+        ];
+
+        // SPA Navigation Handler
+        function navigateTo(pageId) {
+            const pages = ['home', 'search', 'detail', 'booking', 'profile'];
+            pages.forEach(p => {
+                document.getElementById(`page-${p}`).classList.add('hidden');
+                
+                // Desktop Nav
+                const navBtn = document.getElementById(`nav-${p}`);
+                if(navBtn) navBtn.classList.remove('active-tab');
+
+                // Mobile Nav
+                const mobBtn = document.getElementById(`mob-${p}`);
+                if(mobBtn) {
+                    mobBtn.classList.remove('text-blue-600');
+                    mobBtn.classList.add('text-slate-400');
+                }
+            });
+
+            document.getElementById(`page-${pageId}`).classList.remove('hidden');
+            
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if(activeNav) activeNav.classList.add('active-tab');
+
+            const activeMob = document.getElementById(`mob-${pageId}`);
+            if(activeMob) {
+                activeMob.classList.add('text-blue-600');
+                activeMob.classList.remove('text-slate-400');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Parking List
+        function renderParkingList(items) {
+            const container = document.getElementById('parkingListContainer');
+            container.innerHTML = '';
+            
+            items.forEach(item => {
+                const el = document.createElement('div');
+                el.className = "bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex gap-3 cursor-pointer hover:border-blue-300 transition";
+                el.onclick = () => selectParking(item.id);
+                el.innerHTML = `
+                    <img src="${item.image}" class="w-24 h-24 rounded-lg object-cover">
+                    <div class="flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">${item.name}</h4>
+                            <p class="text-[11px] text-slate-500"><i class="fa-solid fa-location-dot text-red-500"></i> ${item.location}</p>
+                        </div>
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="text-xs font-bold text-emerald-600">ว่าง ${item.available} ที่</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-bold text-blue-600 text-sm">฿${item.price}</span>
+                                <span class="text-[10px] text-slate-400">/ชม.</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        // Select Parking Action
+        function selectParking(id) {
+            selectedParking = parkingData.find(p => p.id === id);
+            document.getElementById('detail-title').innerText = selectedParking.name;
+            document.getElementById('detail-price').innerText = `฿${selectedParking.price}`;
+            document.getElementById('detail-total-spaces').innerText = `ว่าง ${selectedParking.available} ช่อง`;
+            calculatePrice();
+            navigateTo('detail');
+        }
+
+        // Filter Parking List
+        function filterParkingList() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = parkingData.filter(p => p.name.toLowerCase().includes(query) || p.location.toLowerCase().includes(query));
+            renderParkingList(filtered);
+        }
+
+        // Price Calculation Logic
+        function calculatePrice() {
+            const start = document.getElementById('bookTimeStart').value;
+            const end = document.getElementById('bookTimeEnd').value;
+            
+            if(start && end) {
+                const startHour = parseInt(start.split(':')[0]);
+                const endHour = parseInt(end.split(':')[0]);
+                let diff = endHour - startHour;
+                if(diff <= 0) diff = 1;
+
+                const total = diff * selectedParking.price;
+                document.getElementById('calcHours').innerText = diff;
+                document.getElementById('calcSubtotal').innerText = `฿${total.toFixed(2)}`;
+                document.getElementById('calcTotal').innerText = `฿${total.toFixed(2)}`;
+            }
+        }
+
+        // Confirm Booking
+        function confirmBooking() {
+            const date = document.getElementById('bookDate').value || new Date().toISOString().split('T')[0];
+            const start = document.getElementById('bookTimeStart').value;
+            const end = document.getElementById('bookTimeEnd').value;
+            const total = document.getElementById('calcTotal').innerText;
+
+            const newBooking = {
+                id: 'BK' + Math.floor(10000 + Math.random() * 90000),
+                name: selectedParking.name,
+                date: date,
+                time: `${start} - ${end}`,
+                amount: total,
+                status: "สำเร็จ"
+            };
+
+            bookingHistory.unshift(newBooking);
+            renderHistory();
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function closeModalAndGoProfile() {
+            document.getElementById('successModal').classList.add('hidden');
+            navigateTo('profile');
+        }
+
+        // Render History
+        function renderHistory() {
+            const container = document.getElementById('bookingHistoryContainer');
+            container.innerHTML = '';
+            
+            bookingHistory.forEach(item => {
+                const el = document.createElement('div');
+                el.className = "bg-slate-50 p-3 rounded-xl border border-slate-200 flex justify-between items-center";
+                el.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-xs text-slate-800">${item.name}</span>
+                            <span class="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-medium">${item.status}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-0.5"><i class="fa-regular fa-calendar"></i> ${item.date} | ${item.time}</p>
+                        <span class="text-[10px] text-slate-400 font-mono">รหัส: ${item.id}</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="font-bold text-sm text-blue-600">${item.amount}</span>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        // Github Modal Modals
+        function openGithubModal() { document.getElementById('githubModal').classList.remove('hidden'); }
+        function closeGithubModal() { document.getElementById('githubModal').classList.add('hidden'); }
+
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderParkingList(parkingData);
+            renderHistory();
+            document.getElementById('bookDate').value = new Date().toISOString().split('T')[0];
+        });
+    </script>
+</body>
+</html>
